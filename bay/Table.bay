@@ -1,0 +1,205 @@
+<!--
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+
+<class name="Runtime.Widget.Table.Table">
+
+<use name="Runtime.BaseStruct" />
+<use name="Runtime.ModelProxy" />
+<use name="Runtime.Web.Layout" />
+<use name="Runtime.Web.LayoutModel" />
+<use name="Runtime.Web.Message" />
+<use name="Runtime.Web.Events.MouseClickEvent" />
+<use name="Runtime.Widget.Crud.CrudPageModel" />
+<use name="Runtime.Widget.Crud.CrudWidget" />
+<use name="Runtime.Widget.Button" component="true" />
+<use name="Runtime.Widget.FieldInfo" />
+<use name="Runtime.Widget.FieldInfo" />
+<use name="Runtime.Widget.Pagination" component="true" />
+<use name="Runtime.Widget.TopButtons" component="true" />
+
+
+<template name="renderTop">
+	%if (model.show_top_buttons and model.top_buttons != null)
+	{
+		<TopButtons @model=[] />
+	}
+</template>
+
+
+<template name="renderHeaderField" args="string field_name">
+</template>
+
+
+<template name="renderField" args="int row_number, FieldInfo field, Dict item">
+	
+	%if (field.component != null)
+	{
+		%set Collection options = field.options;
+		%set Dict component_settings = field.component_settings;
+		
+		%set var value = "";
+		%if (field.value_method)
+		{
+			%set fn f = rtl::method(field.value_method.get(0), field.value_method.get(1));
+			%set value = f(layout, model, row_number, field, item);
+		}
+		
+		<{field.component}
+			crud_item={{ item }}
+			name={{ field.name }}
+			options={{ options }}
+			value={{ item[field.name] }}
+			@model=[ "data", "items", row_number, field.name ]
+			...component_settings
+		/>
+	}
+	%elseif (field.render_method)
+	{
+		%set fn f = rtl::method(field.render_method.obj, field.render_method.name);
+		%render f(row_number, field, item);
+	}
+	%elseif (field.value_method)
+	{
+		{{ field.value_method.call([layout, model, row_number, field, item]) }}
+	}
+	%elseif (field.name == "row_number")
+	{
+		{{ model.data.limit * (model.data.page - 1) + row_number + 1 }}
+	}
+	%elseif (field.name == "row_buttons")
+	{
+		%set CrudWidget parent_model = model.getParentWidget(layout);
+		
+		%set string href_edit = parent_model.getRouteHref("edit", {"item": item});
+		%set string href_delete = parent_model.getRouteHref("delete", {"item": item});
+		%set Dict item_pk = model.fields.getPrimaryKey(item);
+		
+		<div class="web_table__td_row_buttons">
+			<Button type="small" href={{ href_edit }}>
+				Edit
+			</Button>
+			<Button type="danger small"
+				href={{ href_delete }}>
+				Delete
+			</Button>
+		</div>
+	}
+	%else
+	{
+		{{ item[field.name] }}
+	}
+	
+</template>
+
+
+<template name="renderHeader">
+	%set Collection<string> columns = model.fields.fields_list;
+	%if (columns)
+	{
+		<tr class="web_table__row_header">
+			%for (int i=0; i<columns.count(); i++)
+			{
+				%set string field_name = columns[i];
+				%set FieldInfo field = model.fields.getField(field_name);
+				%if (field)
+				{
+					<th class={{ "web_table__th--" ~ field_name }}>
+						{{ field.label }}
+					</th>
+				}
+			}
+		</tr>
+	}
+</template>
+
+
+<template name="renderRow" args="int row_number">
+	%set Collection<string> columns = model.fields.fields_list;
+	%set BaseStruct item = model.data.items[row_number];
+	<tr class="web_table__row_item" data-row-number={{ row_number }}
+		class={{ model.data.selected == row_number ? "web_table__row_item--selected" : "" }}
+		@event:MouseClickEvent="onRowClick"
+	>
+		%for (int i=0; i<columns.count(); i++)
+		{
+			%set string field_name = columns[i];
+			%set FieldInfo field = model.fields.getField(field_name);
+			%if (field)
+			{
+				<td class={{ "web_table__td web_table__td--" ~ field.name }}>
+					%render static::renderField(row_number, field, item);
+				</td>
+			}
+		}
+	</tr>
+</template>
+
+
+<template name="renderTable">
+	%set Collection items = model["data", "items"];
+	<table class="web_table">
+		%render static::renderHeader();
+		%if (items)
+		{
+			%for (int i=0; i<items.count(); i++)
+			{
+				%render static::renderRow(i);
+			}
+		}
+		%render static::renderPagination();
+	</table>
+</template>
+
+
+<template name="renderPagination">
+	%set int page = model.data.page;
+	%set int pages = model.data.pages;
+	%if (pages > 1)
+	{
+		%set Collection<string> columns = model.fields.fields_list;
+		<tr>
+			<td colspan={{ columns.count() }} class="web_table__row_pagination">
+				<Pagination
+					page={{ page }}
+					pages={{ pages }}
+				/>
+			</td>
+		</tr>
+	}
+</template>
+
+
+<template>
+	%render static::renderTop();
+	%render static::renderTable();
+</template>
+
+
+<script>
+
+/**
+ * Row click
+ */
+async void onRowClick(Message<MouseClickEvent> msg)
+{
+}
+
+</script>
+
+
+</class>
