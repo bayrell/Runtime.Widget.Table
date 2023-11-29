@@ -1,0 +1,145 @@
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+namespace Runtime.Widget.Table;
+
+use Runtime.BaseObject;
+use Runtime.Web.ApiResult;
+use Runtime.Web.LayoutModel;
+use Runtime.Widget.WidgetError;
+
+
+class TableApiStorage extends BaseObject
+{
+	string api_name = "";
+	
+	Vector items = null;
+	int page = 0;
+	int pages = 0;
+	int limit = 10;
+	
+	LayoutModel layout = null;
+	WidgetError error = new WidgetError;
+	
+	
+	/**
+	 * Constructor
+	 */
+	void constructor(LayoutModel layout, string object_name)
+	{
+		parent();
+		this.layout = layout;
+		this.api_name = object_name ~ "::crud";
+	}
+	
+	
+	/**
+	 * Set api result
+	 */
+	void setApiResult(ApiResult res)
+	{
+		this.setItems(res.data["items"]);
+		this.setLimit(res.data["limit"]);
+		this.setPage(res.data["page"]);
+		this.setPages(res.data["pages"]);
+		this.error.setApiResult(res);
+	}
+	
+	
+	/**
+	 * Set items
+	 */
+	void setItems(Vector items)
+	{
+		this.items = items;
+	}
+	
+	
+	/**
+	 * Set limit
+	 */
+	void setLimit(int limit)
+	{
+		this.limit = limit;
+	}
+	
+	
+	/**
+	 * Set page
+	 */
+	void setPage(int page)
+	{
+		this.page = page;
+	}
+	
+	
+	/**
+	 * Set pages
+	 */
+	void setPages(int pages)
+	{
+		this.pages = pages;
+	}
+	
+	
+	/**
+	 * Import data
+	 */
+	void importData(Map import_data)
+	{
+		this.items = import_data.get("items");
+		this.page = import_data.get("page");
+		this.pages = import_data.get("pages");
+		this.limit = import_data.get("limit");
+		this.error.importData(import_data.get("error"));
+	}
+	
+	
+	/**
+	 * Export data
+	 */
+	Map exportData()
+	{
+		Map data = {
+			"items": this.items,
+			"page": this.page,
+			"pages": this.pages,
+			"limit": this.limit,
+			"error": this.error.exportData(),
+		};
+		return data;
+	}
+	
+	
+	/**
+	 * Load data from api
+	 */
+	async void doSearch()
+	{
+		ApiResult res = await this.layout.callApi({
+			"class": this.api_name,
+			"method": "actionSearch",
+			"data": {
+				"page": this.page,
+				"pages": this.pages,
+			}
+		});
+		this.setApiResult(res);
+	}
+	
+}

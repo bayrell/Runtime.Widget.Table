@@ -19,25 +19,23 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.Web.BaseModel;
+use Runtime.Widget.Table.TableApiStorage;
 
 
 class TableModel extends BaseModel
 {
+	TableApiStorage storage = null;
 	string widget_name = "table";
 	Vector<Map> fields = [];
 	Vector<string> top_buttons = [];
 	
 	
-	void setPage(int page)
-	{
-	}
-	
-	
 	/**
 	 * Set data provider
 	 */
-	void setDataProvider()
+	void setDataStorage(TableApiStorage storage)
 	{
+		this.storage = storage;
 	}
 	
 	
@@ -66,6 +64,7 @@ class TableModel extends BaseModel
 	void importData(Map import_data)
 	{
 		parent(import_data);
+		this.storage.importData(import_data.get("storage"));
 	}
 	
 	
@@ -75,7 +74,18 @@ class TableModel extends BaseModel
 	Map exportData()
 	{
 		Map data = parent();
+		data.set("storage", this.storage.exportData());
 		return data;
+	}
+	
+	
+	/**
+	 * Load table data
+	 */
+	async void loadData()
+	{
+		await parent();
+		await this.storage.doSearch();
 	}
 	
 }
