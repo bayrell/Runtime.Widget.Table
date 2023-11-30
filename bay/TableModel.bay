@@ -18,13 +18,13 @@
 
 namespace Runtime.Widget.Table;
 
-use Runtime.Web.BaseModel;
-use Runtime.Widget.Table.TableApiStorage;
+use Runtime.Web.BaseWidget;
+use Runtime.Widget.Crud.CrudApiStorage;
 
 
-class TableModel extends BaseModel
+class TableModel extends BaseWidget
 {
-	TableApiStorage storage = null;
+	CrudApiStorage storage = null;
 	string widget_name = "table";
 	Vector<Map> fields = [];
 	Vector<string> top_buttons = [];
@@ -33,7 +33,7 @@ class TableModel extends BaseModel
 	/**
 	 * Set data provider
 	 */
-	void setDataStorage(TableApiStorage storage)
+	void setDataStorage(CrudApiStorage storage)
 	{
 		this.storage = storage;
 	}
@@ -51,7 +51,7 @@ class TableModel extends BaseModel
 	/**
 	 * Add top button
 	 */
-	BaseModel addTopButton(BaseModel top_button)
+	TableModel addTopButton(TableModel top_button)
 	{
 		this.addWidget(top_button);
 		this.top_buttons.append(top_button.widget_name);

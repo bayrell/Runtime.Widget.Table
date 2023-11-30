@@ -2,7 +2,6 @@
 	"name": "Runtime.Widget.Table",
 	"assets":
 	[
-		"TableApiStorage.bay",
 		"TableModel.bay",
 		"ModuleDescription.bay"
 	],
