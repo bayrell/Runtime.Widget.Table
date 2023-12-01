@@ -18,187 +18,121 @@
 
 <class name="Runtime.Widget.Table.Table">
 
-<use name="Runtime.BaseStruct" />
-<use name="Runtime.ModelProxy" />
-<use name="Runtime.Web.Layout" />
-<use name="Runtime.Web.LayoutModel" />
-<use name="Runtime.Web.Message" />
-<use name="Runtime.Web.Events.MouseClickEvent" />
-<use name="Runtime.Widget.Crud.CrudPageModel" />
-<use name="Runtime.Widget.Crud.CrudWidget" />
-<use name="Runtime.Widget.Button" component="true" />
-<use name="Runtime.Widget.FieldInfo" />
-<use name="Runtime.Widget.FieldInfo" />
-<use name="Runtime.Widget.Pagination" component="true" />
-<use name="Runtime.Widget.TopButtons" component="true" />
+<use name="Runtime.Widget.Table.TableModel" />
 
 
-<template name="renderTop">
-	%if (model.show_top_buttons and model.top_buttons != null)
-	{
-		<TopButtons @model=[] />
-	}
-</template>
-
-
-<template name="renderHeaderField" args="string field_name">
-</template>
-
-
-<template name="renderField" args="int row_number, FieldInfo field, Dict item">
-	
-	%if (field.component != null)
-	{
-		%set Collection options = field.options;
-		%set Dict component_settings = field.component_settings;
-		
-		%set var value = "";
-		%if (field.value_method)
-		{
-			%set fn f = rtl::method(field.value_method.get(0), field.value_method.get(1));
-			%set value = f(layout, model, row_number, field, item);
-		}
-		
-		<{field.component}
-			crud_item={{ item }}
-			name={{ field.name }}
-			options={{ options }}
-			value={{ item[field.name] }}
-			@model=[ "data", "items", row_number, field.name ]
-			...component_settings
-		/>
-	}
-	%elseif (field.render_method)
-	{
-		%set fn f = rtl::method(field.render_method.obj, field.render_method.name);
-		%render f(row_number, field, item);
-	}
-	%elseif (field.value_method)
-	{
-		{{ field.value_method.call([layout, model, row_number, field, item]) }}
-	}
-	%elseif (field.name == "row_number")
-	{
-		{{ model.data.limit * (model.data.page - 1) + row_number + 1 }}
-	}
-	%elseif (field.name == "row_buttons")
-	{
-		%set CrudWidget parent_model = model.getParentWidget(layout);
-		
-		%set string href_edit = parent_model.getRouteHref("edit", {"item": item});
-		%set string href_delete = parent_model.getRouteHref("delete", {"item": item});
-		%set Dict item_pk = model.fields.getPrimaryKey(item);
-		
-		<div class="web_table__td_row_buttons">
-			<Button type="small" href={{ href_edit }}>
-				Edit
-			</Button>
-			<Button type="danger small"
-				href={{ href_delete }}>
-				Delete
-			</Button>
-		</div>
-	}
-	%else
-	{
-		{{ item[field.name] }}
-	}
-	
-</template>
+<style>
+.widget_table{
+	width: auto;
+	margin-bottom: 1rem;
+    vertical-align: top;
+    border-color: var(--widget-color-border);
+	border-width: var(--widget-border-width);
+}
+.widget_table__th{
+	text-align: center;
+}
+.widget_table__th, .widget_table__td{
+	vertical-align: middle;
+	padding: var(--widget-spacer);
+	border-color: var(--widget-color-border);
+	border-width: var(--widget-border-width);
+	background-color: var(--widget-color-table-background);
+}
+</style>
 
 
 <template name="renderHeader">
-	%set Collection<string> columns = model.fields.fields_list;
-	%if (columns)
+	%set TableModel model = this.model;
+	%set Collection fields = model.fields;
+	%if (fields)
 	{
-		<tr class="web_table__row_header">
-			%for (int i=0; i<columns.count(); i++)
+		<tr class="widget_table__row_header">
+			%for (int i=0; i<fields.count(); i++)
 			{
-				%set string field_name = columns[i];
-				%set FieldInfo field = model.fields.getField(field_name);
-				%if (field)
-				{
-					<th class={{ "web_table__th--" ~ field_name }}>
-						{{ field.label }}
-					</th>
-				}
+				%set Dict field = fields[i];
+				%set string field_name = field.get("name");
+				<th class={{ "widget_table__th widget_table__th--" ~ field_name }}>
+					{{ field.get("label", "") }}
+				</th>
 			}
 		</tr>
 	}
 </template>
 
 
-<template name="renderRow" args="int row_number">
-	%set Collection<string> columns = model.fields.fields_list;
-	%set BaseStruct item = model.data.items[row_number];
-	<tr class="web_table__row_item" data-row-number={{ row_number }}
-		class={{ model.data.selected == row_number ? "web_table__row_item--selected" : "" }}
-		@event:MouseClickEvent="onRowClick"
-	>
-		%for (int i=0; i<columns.count(); i++)
+<template name="renderField" args="int row_number, FieldInfo field, Dict item">
+	%set TableModel model = this.model;
+	%set var storage = model.storage;
+	%set string field_name = field.get("name");
+	%set string field_component = field.get("component", null);
+	%set string field_model = field.get("model", null);
+	<td class={{ "widget_table__td widget_table__td--" ~ field_name }}>
+		%if (field_name == "row_number")
 		{
-			%set string field_name = columns[i];
-			%set FieldInfo field = model.fields.getField(field_name);
-			%if (field)
+			{{ storage.limit * (storage.page - 1) + row_number + 1 }}
+		}
+		%else if (field_component != null)
+		{
+			<{field_component} @model={{ field_model }} />
+		}
+		%else
+		{
+			{{ item.get(field_name) }}
+		}
+	</td>
+</template>
+
+
+<template name="renderRow" args="int row_number">
+	%set TableModel model = this.model;
+	%set Collection fields = model.fields;
+	%set Collection items = model.storage.items;
+	<tr>
+		%if (fields)
+		{
+			%for (int i=0; i<fields.count(); i++)
 			{
-				<td class={{ "web_table__td web_table__td--" ~ field.name }}>
-					%render static::renderField(row_number, field, item);
-				</td>
+				%set Dict field = fields[i];
+				%set Dict item = items.get(row_number);
+				%render this.renderField(row_number, field, item);
 			}
 		}
 	</tr>
 </template>
 
 
-<template name="renderTable">
-	%set Collection items = model["data", "items"];
-	<table class="web_table">
-		%render static::renderHeader();
-		%if (items)
-		{
-			%for (int i=0; i<items.count(); i++)
-			{
-				%render static::renderRow(i);
-			}
-		}
-		%render static::renderPagination();
-	</table>
-</template>
-
-
-<template name="renderPagination">
-	%set int page = model.data.page;
-	%set int pages = model.data.pages;
-	%if (pages > 1)
+<template name="renderBody">
+	%set TableModel model = this.model;
+	%set Collection items = model.storage.items;
+	%if (items)
 	{
-		%set Collection<string> columns = model.fields.fields_list;
-		<tr>
-			<td colspan={{ columns.count() }} class="web_table__row_pagination">
-				<Pagination
-					page={{ page }}
-					pages={{ pages }}
-				/>
-			</td>
-		</tr>
+		%for (int i=0; i<items.count(); i++)
+		{
+			%render this.renderRow(i);
+		}
 	}
 </template>
 
 
+<template name="renderTable">	
+	<table class="widget_table table" class={{ this.model.getStyles().join(" ") }}>
+		<tbody>
+			%render this.renderHeader();
+			%render this.renderBody();
+		</tbody>
+	</table>
+</template>
+
+
 <template>
-	%render static::renderTop();
-	%render static::renderTable();
+	<div class="widget_table">
+		%render this.renderTable();
+	</div>
 </template>
 
 
 <script>
-
-/**
- * Row click
- */
-async void onRowClick(Message<MouseClickEvent> msg)
-{
-}
-
 </script>
 
 

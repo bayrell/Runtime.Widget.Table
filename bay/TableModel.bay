@@ -20,14 +20,17 @@ namespace Runtime.Widget.Table;
 
 use Runtime.Web.BaseWidget;
 use Runtime.Widget.Crud.CrudApiStorage;
+use Runtime.Widget.Table.Table;
 
 
 class TableModel extends BaseWidget
 {
 	CrudApiStorage storage = null;
+	string component = classof Table;
 	string widget_name = "table";
 	Vector<Map> fields = [];
 	Vector<string> top_buttons = [];
+	Vector<string> styles = [];
 	
 	
 	/**
@@ -56,6 +59,23 @@ class TableModel extends BaseWidget
 		this.addWidget(top_button);
 		this.top_buttons.append(top_button.widget_name);
 	}
+	
+	
+	/**
+	 * Add table style
+	 */
+	void addStyle(string s)
+	{
+		this.styles.append(s);
+	}
+	
+	
+	/**
+	 * Returns styles
+	 */
+	Vector<string> getStyles() => this.styles
+		.filter( bool (string s) => s != "" )
+	;
 	
 	
 	/**
