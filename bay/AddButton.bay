@@ -22,16 +22,14 @@
 
 
 <template name="render">
-	<div class="d-inline-block">
-		<button type="button" class="button" class={{ this.getStyles() }}
-			@event:onClick={{ this.onClick }}
-		>
-			%render this.renderSlot("default");
-		</button>
-		<Dialog @model={{ this.model.dialog }} @ref="dialog">
-			Dialog content
-		</Dialog>
-	</div>
+	<button type="button" class="button" class={{ this.getStyles() }}
+		@event:onClick={{ this.onClick }}
+	>
+		%render this.renderSlot("default");
+	</button>
+	<Dialog @model={{ this.model.dialog }} @ref="dialog">
+		Dialog content
+	</Dialog>
 </template>
 
 
