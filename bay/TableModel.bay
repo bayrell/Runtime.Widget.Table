@@ -39,6 +39,19 @@ class TableModel extends BaseWidget
 	
 	
 	/**
+	 * Constructor
+	 */
+	void constructor(Dict params = null)
+	{
+		parent(params);
+		if (params)
+		{
+			if (params.has("styles")) this.styles.addStyles(params.get("styles"));
+		}
+	}
+	
+	
+	/**
 	 * Set data provider
 	 */
 	void setDataStorage(CrudApiStorage storage)

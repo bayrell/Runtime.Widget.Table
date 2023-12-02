@@ -19,15 +19,20 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.BaseObject;
+use Runtime.Callback;
 use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
+use Runtime.Widget.Dialog.DialogModel;
+use Runtime.Widget.Table.AddButton;
 use Runtime.Widget.Table.TableModel;
 
 
 class AddButtonModel extends ButtonModel
 {
+	string component = classof AddButton;
 	string content = "Add";
 	TableModel table = null;
+	DialogModel dialog = new DialogModel;
 	
 	
 	/**
@@ -36,10 +41,52 @@ class AddButtonModel extends ButtonModel
 	void constructor(Map params = null)
 	{
 		parent();
-		this.styles.add("success");
 		if (params)
 		{
 			if (params.has("table")) this.table = params.get("table");
 		}
+		this.styles.add("success");
+		
+		/* Setup dialog */
+		this.dialog.title = "Add item";
+		this.dialog.content = "Content";
+		this.dialog.buttons.styles.add("align-end");
+		
+		/* Setup close buttons */
+		ButtonModel close_button = this.dialog.buttons.add(new ButtonModel{
+			"content": "Close",
+			"styles": [
+				"default"
+			],
+		});
+		close_button.events.add("onClick", new Callback(this, "onCloseButtonClick"));
+		
+		/* Setup confirm button */
+		ButtonModel confirm_button = this.dialog.buttons.add(new ButtonModel{
+			"content": "Confirm",
+			"styles": [
+				"primary"
+			],
+		});
+		confirm_button.events.add("onClick", new Callback(this, "onConfirmButtonClick"));
 	}
+	
+	
+	/**
+	 * On close button click
+	 */
+	void onCloseButtonClick()
+	{
+		this.dialog.hide();
+	}
+	
+	
+	/**
+	 * On confirm button click
+	 */
+	void onConfirmButtonClick()
+	{
+		this.dialog.hide();
+	}
+	
 }

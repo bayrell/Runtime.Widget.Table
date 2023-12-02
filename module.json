@@ -2,6 +2,7 @@
 	"name": "Runtime.Widget.Table",
 	"assets":
 	[
+		"AddButton.bay",
 		"AddButtonModel.bay",
 		"AppHook.bay",
 		"Table.bay",
