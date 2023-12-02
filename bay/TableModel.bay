@@ -19,6 +19,9 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.Web.BaseWidget;
+use Runtime.Widget.ButtonModel;
+use Runtime.Widget.RowButtonsModel;
+use Runtime.Widget.Styles;
 use Runtime.Widget.Crud.CrudApiStorage;
 use Runtime.Widget.Table.Table;
 
@@ -29,8 +32,10 @@ class TableModel extends BaseWidget
 	string component = classof Table;
 	string widget_name = "table";
 	Vector<Map> fields = [];
-	Vector<string> top_buttons = [];
-	Vector<string> styles = [];
+	RowButtonsModel top_buttons = new RowButtonsModel{
+		"styles": ["@widget_table__top_buttons"]
+	};
+	Styles styles = new Styles{ "prefix": "widget_table" };
 	
 	
 	/**
@@ -52,30 +57,9 @@ class TableModel extends BaseWidget
 	
 	
 	/**
-	 * Add top button
+	 * Returns item by row number
 	 */
-	TableModel addTopButton(TableModel top_button)
-	{
-		this.addWidget(top_button);
-		this.top_buttons.append(top_button.widget_name);
-	}
-	
-	
-	/**
-	 * Add table style
-	 */
-	void addStyle(string s)
-	{
-		this.styles.append(s);
-	}
-	
-	
-	/**
-	 * Returns styles
-	 */
-	Vector<string> getStyles() => this.styles
-		.filter( bool (string s) => s != "" )
-	;
+	Dict getItemByRowNumber(int row_number) => this.storage.items.get(row_number);
 	
 	
 	/**

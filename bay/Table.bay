@@ -18,6 +18,7 @@
 
 <class name="Runtime.Widget.Table.Table">
 
+<use name="Runtime.Widget.RowButtons" />
 <use name="Runtime.Widget.Table.TableModel" />
 
 
@@ -26,18 +27,25 @@
 	width: auto;
 	margin-bottom: 1rem;
     vertical-align: top;
-    border-color: var(--widget-color-border);
-	border-width: var(--widget-border-width);
 }
 .widget_table__th{
 	text-align: center;
 }
 .widget_table__th, .widget_table__td{
 	vertical-align: middle;
-	padding: var(--widget-spacer);
+	padding: var(--widget-space);
+	background-color: var(--widget-color-table-background);
+}
+.widget_table %(RowButtons)widget_table__top_buttons{
+	margin-bottom: var(--widget-space);
+}
+.widget_table--border{
+    border-color: var(--widget-color-border);
+	border-width: var(--widget-border-width);
+}
+.widget_table--border .widget_table__th, .widget_table--border .widget_table__td{
 	border-color: var(--widget-color-border);
 	border-width: var(--widget-border-width);
-	background-color: var(--widget-color-table-background);
 }
 </style>
 
@@ -74,7 +82,9 @@
 		}
 		%else if (field_component != null)
 		{
-			<{field_component} @model={{ field_model }} />
+			<{field_component} @model={{ field_model }} button_props={{{
+				"row_number": row_number
+			}}} />
 		}
 		%else
 		{
@@ -115,8 +125,16 @@
 </template>
 
 
-<template name="renderTable">	
-	<table class="widget_table table" class={{ this.model.getStyles().join(" ") }}>
+<template name="renderTopButtons">
+	%if (this.model.top_buttons.count() > 0)
+	{
+		<RowButtons @model={{ this.model.top_buttons }} />
+	}
+</template>
+
+
+<template name="renderTable">
+	<table class="widget_table table" class={{ this.getStyles() }}>
 		<tbody>
 			%render this.renderHeader();
 			%render this.renderBody();
@@ -127,12 +145,19 @@
 
 <template>
 	<div class="widget_table">
+		%render this.renderTopButtons();
 		%render this.renderTable();
 	</div>
 </template>
 
 
 <script>
+
+/**
+ * Returns styles
+ */
+string getStyles() => this.model.styles.join(" ");
+
 </script>
 
 
