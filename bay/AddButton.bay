@@ -27,9 +27,11 @@
 	>
 		%render this.renderSlot("default");
 	</button>
-	<Dialog @model={{ this.model.dialog }} @ref="dialog">
-		Dialog content
-	</Dialog>
+	<Teleport>
+		<Dialog @model={{ this.model.dialog }} @ref="dialog">
+			Dialog content
+		</Dialog>
+	</Teleport>
 </template>
 
 
@@ -37,8 +39,7 @@
 
 void onClick()
 {
-	/*parent();*/
-	if (this.model) this.model.onClick();
+	parent();
 	this.model.dialog.show();
 }
 
