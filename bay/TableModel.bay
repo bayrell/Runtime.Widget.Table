@@ -105,4 +105,13 @@ class TableModel extends BaseWidget
 		await this.storage.doSearch();
 	}
 	
+	
+	/**
+	 * Refresh table
+	 */
+	async void refresh()
+	{
+		await this.storage.doSearch();
+	}
+	
 }

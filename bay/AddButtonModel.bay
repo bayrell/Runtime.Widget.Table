@@ -32,6 +32,7 @@ class AddButtonModel extends ButtonModel
 {
 	string component = classof AddButton;
 	string content = "Add";
+	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;
 	
@@ -77,6 +78,17 @@ class AddButtonModel extends ButtonModel
 	
 	
 	/**
+	 * Show dialog
+	 */
+	void showDialog()
+	{
+		this.form.clear();
+		this.dialog.show();
+	}
+	
+	
+	
+	/**
 	 * On close button click
 	 */
 	void onCloseButtonClick()
@@ -88,9 +100,14 @@ class AddButtonModel extends ButtonModel
 	/**
 	 * On confirm button click
 	 */
-	void onConfirmButtonClick()
+	async void onConfirmButtonClick()
 	{
-		this.dialog.hide();
+		await this.form.save();
+		if (this.form.storage.error.isSuccess())
+		{
+			this.dialog.hide();
+			await this.table.refresh();
+		}
 	}
 	
 }

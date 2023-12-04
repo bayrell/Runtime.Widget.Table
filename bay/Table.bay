@@ -60,7 +60,9 @@
 			{
 				%set Dict field = fields[i];
 				%set string field_name = field.get("name");
-				<th class={{ "widget_table__th widget_table__th--" ~ field_name }}>
+				<th class={{ "widget_table__th widget_table__th--" ~ field_name }}
+					@key={{ field_name }}
+				>
 					{{ field.get("label", "") }}
 				</th>
 			}
@@ -75,7 +77,7 @@
 	%set string field_name = field.get("name");
 	%set string field_component = field.get("component", null);
 	%set string field_model = field.get("model", null);
-	<td class={{ "widget_table__td widget_table__td--" ~ field_name }}>
+	<td class={{ "widget_table__td widget_table__td--" ~ field_name }} @key={{ field_name }}>
 		%if (field_name == "row_number")
 		{
 			{{ storage.limit * (storage.page - 1) + row_number + 1 }}
@@ -98,7 +100,7 @@
 	%set TableModel model = this.model;
 	%set Collection fields = model.fields;
 	%set Collection items = model.storage.items;
-	<tr>
+	<tr @key={{ row_number }}>
 		%if (fields)
 		{
 			%for (int i=0; i<fields.count(); i++)

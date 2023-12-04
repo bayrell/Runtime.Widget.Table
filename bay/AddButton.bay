@@ -40,7 +40,7 @@
 void onClick()
 {
 	parent();
-	this.model.dialog.show();
+	this.model.showDialog();
 }
 
 </script>
