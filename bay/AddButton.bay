@@ -18,18 +18,18 @@
 
 <class name="Runtime.Widget.Table.AddButton" extends="Runtime.Widget.Button">
 
+<use name="Runtime.Widget.Button" component="true" />
 <use name="Runtime.Widget.Dialog.Dialog" component="true" />
+<use name="Runtime.Widget.Form.Form" component="true" />
 
 
 <template name="render">
-	<button type="button" class="button" class={{ this.getStyles() }}
-		@event:onClick={{ this.onClick }}
-	>
+	<Button styles={{ this.styles }} @event:onClick={{ this.onClick }}>
 		%render this.renderSlot("default");
-	</button>
+	</Button>
 	<Teleport>
 		<Dialog @model={{ this.model.dialog }} @ref="dialog">
-			Dialog content
+			<Form @model={{ this.model.form }} />
 		</Dialog>
 	</Teleport>
 </template>

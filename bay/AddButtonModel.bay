@@ -23,6 +23,7 @@ use Runtime.Callback;
 use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
+use Runtime.Widget.Form.FormModel;
 use Runtime.Widget.Table.AddButton;
 use Runtime.Widget.Table.TableModel;
 
@@ -41,10 +42,13 @@ class AddButtonModel extends ButtonModel
 	void constructor(Map params = null)
 	{
 		parent();
+		
 		if (params)
 		{
+			if (params.has("form")) this.form = params.get("form");
 			if (params.has("table")) this.table = params.get("table");
 		}
+		
 		this.styles.add("success");
 		
 		/* Setup dialog */
@@ -54,16 +58,16 @@ class AddButtonModel extends ButtonModel
 		
 		/* Setup close buttons */
 		ButtonModel close_button = this.dialog.buttons.add(new ButtonModel{
-			"content": "Close",
+			"content": "Cancel",
 			"styles": [
-				"default"
+				"gray"
 			],
 		});
 		close_button.events.add("onClick", new Callback(this, "onCloseButtonClick"));
 		
 		/* Setup confirm button */
 		ButtonModel confirm_button = this.dialog.buttons.add(new ButtonModel{
-			"content": "Confirm",
+			"content": "Save",
 			"styles": [
 				"primary"
 			],

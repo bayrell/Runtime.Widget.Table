@@ -19,7 +19,7 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.Entity.Hook;
-
+use Runtime.Entity.Hook;
 
 static class ModuleDescription
 {
@@ -44,6 +44,8 @@ static class ModuleDescription
 	pure Dict<string> requiredModules() =>
 	{
 		"Runtime.Widget": "0.12",
+		"Runtime.Widget.Dialog": "0.12",
+		"Runtime.Widget.Form": "0.12",
 	};
 	
 	
