@@ -16,7 +16,7 @@
  *  limitations under the License.
 -->
 
-<class name="Runtime.Widget.Table.DeleteWidget">
+<class name="Runtime.Widget.Table.DeleteDialog">
 
 <use name="Runtime.Widget.WidgetError" />
 <use name="Runtime.Widget.Dialog.Dialog" component="true" />

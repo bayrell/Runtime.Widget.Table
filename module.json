@@ -3,10 +3,10 @@
 	"assets":
 	[
 		"AppHook.bay",
-		"DeleteWidget.bay",
-		"DeleteWidgetModel.bay",
-		"SaveWidget.bay",
-		"SaveWidgetModel.bay",
+		"DeleteDialog.bay",
+		"DeleteDialogModel.bay",
+		"SaveDialog.bay",
+		"SaveDialogModel.bay",
 		"Table.bay",
 		"TableModel.bay",
 		"ModuleDescription.bay"

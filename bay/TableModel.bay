@@ -18,6 +18,7 @@
 
 namespace Runtime.Widget.Table;
 
+use Runtime.BaseObject;
 use Runtime.Web.BaseWidget;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.RowButtonsModel;
@@ -48,6 +49,50 @@ class TableModel extends BaseWidget
 		{
 			if (params.has("styles")) this.styles.addStyles(params.get("styles"));
 		}
+		
+		this.setDataStorage( this.createDataStorage() );
+		this.initWidgets();
+		this.initFields();
+		this.initTopButtons();
+		this.initStyles();
+	}
+	
+	
+	/**
+	 * Create data storage
+	 */
+	BaseObject createDataStorage() => null;
+	
+	
+	/**
+	 * Init table widgets
+	 */
+	void initWidgets()
+	{
+	}
+	
+	
+	/**
+	 * Init fields
+	 */
+	void initFields()
+	{
+	}
+	
+	
+	/**
+	 * Init top buttons
+	 */
+	void initTopButtons()
+	{
+	}
+	
+	
+	/**
+	 * Init styles
+	 */
+	void initStyles()
+	{
 	}
 	
 	
@@ -81,7 +126,10 @@ class TableModel extends BaseWidget
 	void importData(Map import_data)
 	{
 		parent(import_data);
-		this.storage.importData(import_data.get("storage"));
+		if (this.storage)
+		{
+			this.storage.importData(import_data.get("storage"));
+		}
 	}
 	
 	
@@ -91,7 +139,10 @@ class TableModel extends BaseWidget
 	Map exportData()
 	{
 		Map data = parent();
-		data.set("storage", this.storage.exportData());
+		if (this.storage)
+		{
+			data.set("storage", this.storage.exportData());
+		}
 		return data;
 	}
 	

@@ -16,7 +16,7 @@
  *  limitations under the License.
 -->
 
-<class name="Runtime.Widget.Table.SaveWidget">
+<class name="Runtime.Widget.Table.SaveDialog">
 
 <use name="Runtime.Widget.Dialog.Dialog" component="true" />
 <use name="Runtime.Widget.Form.Form" component="true" />

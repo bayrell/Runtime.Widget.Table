@@ -26,14 +26,14 @@ use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
 use Runtime.Widget.Form.FormModel;
-use Runtime.Widget.Table.DeleteWidget;
+use Runtime.Widget.Table.DeleteDialog;
 use Runtime.Widget.Table.TableModel;
 
 
-class DeleteWidgetModel extends BaseWidget
+class DeleteDialogModel extends BaseWidget
 {
-	string widget_name = "delete_widget";
-	string component = classof DeleteWidget;
+	string widget_name = "delete_dialog";
+	string component = classof DeleteDialog;
 	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;

@@ -26,14 +26,14 @@ use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
 use Runtime.Widget.Form.FormModel;
-use Runtime.Widget.Table.SaveWidget;
+use Runtime.Widget.Table.SaveDialog;
 use Runtime.Widget.Table.TableModel;
 
 
-class SaveWidgetModel extends BaseWidget
+class SaveDialogModel extends BaseWidget
 {
-	string widget_name = "save_widget";
-	string component = classof SaveWidget;
+	string widget_name = "save_dialog";
+	string component = classof SaveDialog;
 	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;
