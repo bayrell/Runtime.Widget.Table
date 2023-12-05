@@ -1,0 +1,77 @@
+<!--
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+
+<class name="Runtime.Widget.Table.DeleteWidget">
+
+<use name="Runtime.Widget.WidgetError" />
+<use name="Runtime.Widget.Dialog.Dialog" component="true" />
+
+
+<style>
+.widget_delete__content{
+	margin-bottom: calc(var(--widget-space) * 3);
+}
+.widget_delete__result{
+	text-align: center;
+}
+.widget_delete__result--success{
+	color: var(--widget-color-success);
+}
+.widget_delete__result--error{
+	color: var(--widget-color-danger);
+}
+.widget_delete__result--hide{
+	display: none;
+}
+</style>
+
+
+<template name="render">
+	<Dialog @model={{ this.model.dialog }} @ref="dialog">
+		<div class="widget_delete__content">Delete item</div>
+		<div class="widget_delete__result" class={{ this.getErrorClass() }} >
+			{{ this.getErrorMessage() }}
+		</div>
+	</Dialog>
+</template>
+
+
+<script>
+
+/**
+ * Returns error class
+ */
+string getErrorClass()
+{
+	WidgetError error = this.model.form.storage.error;
+	if (error.message == "") return "widget_delete__result--hide";
+	if (error.isSuccess()) return "widget_delete__result--success";
+	if (error.isError()) return "widget_delete__result--error";
+	return "";
+}
+
+
+/**
+ * Returns error message
+ */
+string getErrorMessage() => this.model.form.storage.error.message;
+
+</script>
+
+
+</class>

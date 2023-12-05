@@ -3,6 +3,8 @@
 	"assets":
 	[
 		"AppHook.bay",
+		"DeleteWidget.bay",
+		"DeleteWidgetModel.bay",
 		"SaveWidget.bay",
 		"SaveWidgetModel.bay",
 		"Table.bay",

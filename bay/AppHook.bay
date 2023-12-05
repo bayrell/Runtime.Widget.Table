@@ -19,7 +19,8 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.Web.Hooks.AppHook as BaseAppHook;
-use Runtime.Widget.Table.AddButton;
+use Runtime.Widget.Table.DeleteWidget;
+use Runtime.Widget.Table.SaveWidget;
 use Runtime.Widget.Table.Table;
 
 
@@ -40,7 +41,8 @@ class AppHook extends BaseAppHook
 	void components(Map params)
 	{
 		Vector components = params.get("components");
-		components.append(classof AddButton);
+		components.append(classof DeleteWidget);
+		components.append(classof SaveWidget);
 		components.append(classof Table);
 	}
 }

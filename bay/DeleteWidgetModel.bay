@@ -26,14 +26,14 @@ use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
 use Runtime.Widget.Form.FormModel;
-use Runtime.Widget.Table.SaveWidget;
+use Runtime.Widget.Table.DeleteWidget;
 use Runtime.Widget.Table.TableModel;
 
 
-class SaveWidgetModel extends BaseWidget
+class DeleteWidgetModel extends BaseWidget
 {
-	string widget_name = "save_widget";
-	string component = classof SaveWidget;
+	string widget_name = "delete_widget";
+	string component = classof DeleteWidget;
 	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;
@@ -53,7 +53,7 @@ class SaveWidgetModel extends BaseWidget
 		}
 		
 		/* Setup dialog */
-		this.dialog.title = "Add item";
+		this.dialog.title = "Delete item";
 		this.dialog.buttons.styles.add("align-end");
 		
 		/* Setup close buttons */
@@ -69,7 +69,7 @@ class SaveWidgetModel extends BaseWidget
 		ButtonModel confirm_button = this.dialog.buttons.add(new ButtonModel{
 			"content": "Save",
 			"styles": [
-				"primary"
+				"danger"
 			],
 		});
 		confirm_button.events.add("onClick", new Callback(this, "onConfirmButtonClick"));
@@ -81,37 +81,23 @@ class SaveWidgetModel extends BaseWidget
 	 */
 	async void onClick(Dict data = null)
 	{
-		int row_number = -1;
-		if (data != null and data.has("row_number"))
-		{
-			row_number = data.get("row_number");
-		}
+		int row_number = data.get("row_number");
 		
 		/* Clear form */
 		this.form.clear();
 		
-		/* Add item */
-		if (row_number == -1)
-		{
-			this.dialog.title = "Add item";
-			this.form.setAction("add");
-		}
+		/* Set title */
+		this.dialog.title = "Delete item";
+		this.form.setAction("delete");
 		
-		/* Edit item */
-		else
-		{
-			this.dialog.title = "Edit item";
-			this.form.setAction("edit");
-			
-			/* Set item */
-			Dict item = this.table.getItemByRowNumber(row_number);
-			item = Serializer::copy(item);
-			this.form.storage.setItem(item);
-			
-			/* Set primary key */
-			Map pk = this.form.getPrimaryKey();
-			this.form.storage.setPrimaryKey(pk);
-		}
+		/* Set item */
+		Dict item = this.table.getItemByRowNumber(row_number);
+		item = Serializer::copy(item);
+		this.form.storage.setItem(item);
+		
+		/* Set primary key */
+		Map pk = this.form.getPrimaryKey();
+		this.form.storage.setPrimaryKey(pk);
 		
 		/* Show dialog */
 		this.dialog.show();
@@ -132,7 +118,7 @@ class SaveWidgetModel extends BaseWidget
 	 */
 	async void onConfirmButtonClick()
 	{
-		await this.form.save();
+		await this.form.delete();
 		if (this.form.storage.error.isSuccess())
 		{
 			this.dialog.hide();
