@@ -16,33 +16,17 @@
  *  limitations under the License.
 -->
 
-<class name="Runtime.Widget.Table.AddButton" extends="Runtime.Widget.Button">
+<class name="Runtime.Widget.Table.SaveWidget">
 
-<use name="Runtime.Widget.Button" component="true" />
 <use name="Runtime.Widget.Dialog.Dialog" component="true" />
 <use name="Runtime.Widget.Form.Form" component="true" />
 
 
 <template name="render">
-	<Button styles={{ this.styles }} @event:onClick={{ this.onClick }}>
-		%render this.renderSlot("default");
-	</Button>
-	<Teleport>
-		<Dialog @model={{ this.model.dialog }} @ref="dialog">
-			<Form @model={{ this.model.form }} />
-		</Dialog>
-	</Teleport>
+	<Dialog @model={{ this.model.dialog }} @ref="dialog">
+		<Form @model={{ this.model.form }} />
+	</Dialog>
 </template>
 
-
-<script>
-
-void onClick()
-{
-	parent();
-	this.model.showDialog();
-}
-
-</script>
 
 </class>

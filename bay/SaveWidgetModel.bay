@@ -20,18 +20,19 @@ namespace Runtime.Widget.Table;
 
 use Runtime.BaseObject;
 use Runtime.Callback;
+use Runtime.Serializer;
+use Runtime.Web.BaseWidget;
 use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
 use Runtime.Widget.Form.FormModel;
-use Runtime.Widget.Table.AddButton;
+use Runtime.Widget.Table.SaveWidget;
 use Runtime.Widget.Table.TableModel;
 
 
-class AddButtonModel extends ButtonModel
+class SaveWidgetModel extends BaseWidget
 {
-	string component = classof AddButton;
-	string content = "Add";
+	string component = classof SaveWidget;
 	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;
@@ -42,7 +43,7 @@ class AddButtonModel extends ButtonModel
 	 */
 	void constructor(Map params = null)
 	{
-		parent();
+		parent(params);
 		
 		if (params)
 		{
@@ -50,11 +51,8 @@ class AddButtonModel extends ButtonModel
 			if (params.has("table")) this.table = params.get("table");
 		}
 		
-		this.styles.add("success");
-		
 		/* Setup dialog */
 		this.dialog.title = "Add item";
-		this.dialog.content = "Content";
 		this.dialog.buttons.styles.add("align-end");
 		
 		/* Setup close buttons */
@@ -78,14 +76,45 @@ class AddButtonModel extends ButtonModel
 	
 	
 	/**
-	 * Show dialog
+	 * On click
 	 */
-	void showDialog()
+	async void onClick(Dict data = null)
 	{
+		int row_number = -1;
+		if (data != null and data.has("row_number"))
+		{
+			row_number = data.get("row_number");
+		}
+		
+		/* Clear form */
 		this.form.clear();
+		
+		/* Add item */
+		if (row_number == -1)
+		{
+			this.dialog.title = "Add item";
+			this.form.setAction("add");
+		}
+		
+		/* Edit item */
+		else
+		{
+			this.dialog.title = "Edit item";
+			this.form.setAction("edit");
+			
+			/* Set item */
+			Dict item = this.table.getItemByRowNumber(row_number);
+			item = Serializer::copy(item);
+			this.form.storage.setItem(item);
+			
+			/* Set primary key */
+			Map pk = this.form.getPrimaryKey();
+			this.form.storage.setPrimaryKey(item);
+		}
+		
+		/* Show dialog */
 		this.dialog.show();
 	}
-	
 	
 	
 	/**
@@ -109,5 +138,4 @@ class AddButtonModel extends ButtonModel
 			await this.table.refresh();
 		}
 	}
-	
 }
