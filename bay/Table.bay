@@ -85,13 +85,17 @@
 		}
 		%else if (field_component != null)
 		{
-			<{field_component} @model={{ field_model }} data={{{
-				"row_number": row_number,
-			}}} />
+			%set string props = field.get("props", {});
+			<{field_component} @model={{ field_model }}
+				value={{ this.model.getItemValue(item, field_name) }}
+				data={{{
+					"field_name": field_name,
+					"row_number": row_number,
+				}}} ...props />
 		}
 		%else
 		{
-			{{ item.get(field_name) }}
+			{{ this.model.getItemValue(item, field_name) }}
 		}
 	</td>
 </template>

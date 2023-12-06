@@ -93,16 +93,13 @@ class SaveDialogModel extends BaseWidget
 		/* Add item */
 		if (row_number == -1)
 		{
-			this.dialog.title = "Add item";
+			this.dialog.title = this.form.getPageTitle("add");
 			this.form.setAction("add");
 		}
 		
 		/* Edit item */
 		else
 		{
-			this.dialog.title = "Edit item";
-			this.form.setAction("edit");
-			
 			/* Set item */
 			Dict item = this.table.getItemByRowNumber(row_number);
 			item = Serializer::copy(item);
@@ -111,6 +108,10 @@ class SaveDialogModel extends BaseWidget
 			/* Set primary key */
 			Map pk = this.form.getPrimaryKey();
 			this.form.storage.setPrimaryKey(pk);
+			
+			/* Set title */
+			this.dialog.title = this.form.getPageTitle("edit");
+			this.form.setAction("edit");
 		}
 		
 		/* Show dialog */

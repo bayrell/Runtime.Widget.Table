@@ -43,7 +43,7 @@
 
 <template name="render">
 	<Dialog @model={{ this.model.dialog }} @ref="dialog">
-		<div class="widget_delete__content">Delete item</div>
+		<div class="widget_delete__content">{{ this.model.dialog.content }}</div>
 		<div class="widget_delete__result" class={{ this.getErrorClass() }} >
 			{{ this.getErrorMessage() }}
 		</div>

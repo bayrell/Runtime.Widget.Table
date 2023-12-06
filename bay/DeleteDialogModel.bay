@@ -86,10 +86,6 @@ class DeleteDialogModel extends BaseWidget
 		/* Clear form */
 		this.form.clear();
 		
-		/* Set title */
-		this.dialog.title = "Delete item";
-		this.form.setAction("delete");
-		
 		/* Set item */
 		Dict item = this.table.getItemByRowNumber(row_number);
 		item = Serializer::copy(item);
@@ -98,6 +94,11 @@ class DeleteDialogModel extends BaseWidget
 		/* Set primary key */
 		Map pk = this.form.getPrimaryKey();
 		this.form.storage.setPrimaryKey(pk);
+		
+		/* Set title */
+		this.dialog.title = this.form.getPageTitle("delete");
+		this.dialog.content = "Do you want to delete item ?";
+		this.form.setAction("delete");
 		
 		/* Show dialog */
 		this.dialog.show();

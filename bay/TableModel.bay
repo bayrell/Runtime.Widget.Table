@@ -121,6 +121,12 @@ class TableModel extends BaseWidget
 	
 	
 	/**
+	 * Returns item value
+	 */
+	var getItemValue(Map item, string field_name) => item.get(field_name);
+	
+	
+	/**
 	 * Import data
 	 */
 	void importData(Map import_data)
@@ -164,5 +170,4 @@ class TableModel extends BaseWidget
 	{
 		await this.storage.doSearch();
 	}
-	
 }
