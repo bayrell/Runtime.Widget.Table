@@ -19,8 +19,10 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.BaseObject;
+use Runtime.Callback;
 use Runtime.Web.BaseWidget;
 use Runtime.Widget.ButtonModel;
+use Runtime.Widget.RowButtons;
 use Runtime.Widget.RowButtonsModel;
 use Runtime.Widget.Styles;
 use Runtime.Widget.Crud.CrudApiStorage;
@@ -108,9 +110,49 @@ class TableModel extends BaseWidget
 	/**
 	 * Add field
 	 */
-	void addField(Map field)
+	Map addField(Map field)
 	{
 		this.fields.append(field);
+		return field;
+	}
+	
+	
+	/**
+	 * Add field row buttons
+	 */
+	Map addFieldRowButtons()
+	{
+		/* Row buttons */
+		RowButtonsModel row_buttons = new RowButtonsModel();
+		
+		/* Edit button */
+		ButtonModel edit_button = row_buttons.add(new ButtonModel{
+			"content": "Edit",
+			"styles": [
+				"default",
+				"small",
+			],
+		});
+		edit_button.events.add("onClick", new Callback(this.getWidget("save_dialog"), "onClick"));
+		
+		/* Delete button */
+		ButtonModel delete_button = row_buttons.add(new ButtonModel{
+			"content": "Delete",
+			"styles": [
+				"danger",
+				"small",
+			],
+		});
+		delete_button.events.add("onClick", new Callback(this.getWidget("delete_dialog"), "onClick"));
+		
+		/* Add buttons */
+		Map field = this.addField({
+			"name": "row_buttons",
+			"component": classof RowButtons,
+			"model": row_buttons,
+		});
+		
+		return field;
 	}
 	
 	
