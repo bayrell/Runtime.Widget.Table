@@ -36,8 +36,11 @@ class TableDialogModel extends TableModel
 	 */
 	void initWidgets()
 	{
+		parent();
+		
 		/* Create form */
-		FormModel form_model = this.addWidget(this.getWidget("form"));
+		FormModel form_model = this.getWidget("form");
+		if (form_model == null) return;
 		
 		/* Create save wiget */
 		SaveDialogModel save_dialog = this.addWidget( new SaveDialogModel{
