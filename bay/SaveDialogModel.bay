@@ -48,6 +48,7 @@ class SaveDialogModel extends BaseWidget
 		
 		if (params)
 		{
+			if (params.has("parent_widget")) this.table = params.get("parent_widget");
 			if (params.has("form")) this.form = params.get("form");
 			if (params.has("table")) this.table = params.get("table");
 		}

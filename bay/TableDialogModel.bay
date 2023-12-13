@@ -19,6 +19,7 @@
 namespace Runtime.Widget.Table;
 
 use Runtime.Callback;
+use Runtime.Exceptions.RuntimeException;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.RowButtons;
 use Runtime.Widget.RowButtonsModel;
@@ -40,22 +41,23 @@ class TableDialogModel extends TableModel
 		
 		/* Create form */
 		FormModel form_model = this.getWidget("form");
-		if (form_model == null) return;
+		if (form_model == null)
+		{
+			throw new RuntimeException("FormModel is not defined");
+		}
 		
 		/* Create save wiget */
-		SaveDialogModel save_dialog = this.addWidget( new SaveDialogModel{
+		SaveDialogModel save_dialog = new SaveDialogModel{
 			"form": form_model,
-			"layout": this.layout,
-			"table": this,
-		} );
+			"parent_widget": this,
+		};
 		this.addRender(save_dialog.getWidgetName());
 		
 		/* Create delete widget */
-		DeleteDialogModel delete_dialog = this.addWidget( new DeleteDialogModel{
+		DeleteDialogModel delete_dialog = new DeleteDialogModel{
 			"form": form_model,
-			"layout": this.layout,
-			"table": this,
-		} );
+			"parent_widget": this,
+		};
 		this.addRender(delete_dialog.getWidgetName());
 	}
 	
