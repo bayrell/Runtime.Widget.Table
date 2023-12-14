@@ -118,14 +118,10 @@ class TableModel extends BaseWidget
 	
 	
 	/**
-	 * Add field row buttons
+	 * Add edit field row buttons
 	 */
-	Map addFieldRowButtons()
+	ButtonModel addEditFieldRowButtons(RowButtonsModel row_buttons)
 	{
-		/* Row buttons */
-		RowButtonsModel row_buttons = new RowButtonsModel();
-		
-		/* Edit button */
 		ButtonModel edit_button = row_buttons.add(new ButtonModel{
 			"content": "Edit",
 			"styles": [
@@ -133,9 +129,15 @@ class TableModel extends BaseWidget
 				"small",
 			],
 		});
-		edit_button.events.add("onClick", new Callback(this.getWidget("save_dialog"), "onClick"));
-		
-		/* Delete button */
+		return edit_button;
+	}
+	
+	
+	/**
+	 * Add delete field row buttons
+	 */
+	ButtonModel addDeleteFieldRowButtons(RowButtonsModel row_buttons)
+	{
 		ButtonModel delete_button = row_buttons.add(new ButtonModel{
 			"content": "Delete",
 			"styles": [
@@ -143,7 +145,20 @@ class TableModel extends BaseWidget
 				"small",
 			],
 		});
-		delete_button.events.add("onClick", new Callback(this.getWidget("delete_dialog"), "onClick"));
+		return delete_button;
+	}
+	
+	
+	/**
+	 * Add field row buttons
+	 */
+	Map addFieldRowButtons()
+	{
+		/* Row buttons */
+		RowButtonsModel row_buttons = new RowButtonsModel();
+		
+		this.addEditFieldRowButtons(row_buttons);
+		this.addDeleteFieldRowButtons(row_buttons);
 		
 		/* Add buttons */
 		Map field = this.addField({

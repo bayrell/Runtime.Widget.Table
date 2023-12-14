@@ -76,4 +76,44 @@ class TableDialogModel extends TableModel
 		});
 		add_button.events.add("onClick", new Callback(this.getWidget("save_dialog"), "onClick"));
 	}
+	
+	
+	/**
+	 * Add edit field row buttons
+	 */
+	ButtonModel addEditFieldRowButtons(RowButtonsModel row_buttons)
+	{
+		/* Edit button */
+		ButtonModel edit_button = row_buttons.add(new ButtonModel{
+			"content": "Edit",
+			"styles": [
+				"default",
+				"small",
+			],
+		});
+		
+		/* Add edit onClick */
+		SaveDialogModel save_dialog = this.getWidget("save_dialog");
+		edit_button.events.add("onClick", new Callback(save_dialog, "onClick"));
+	}
+	
+	
+	/**
+	 * Add delete field row buttons
+	 */
+	ButtonModel addDeleteFieldRowButtons(RowButtonsModel row_buttons)
+	{
+		/* Delete button */
+		ButtonModel delete_button = row_buttons.add(new ButtonModel{
+			"content": "Delete",
+			"styles": [
+				"danger",
+				"small",
+			],
+		});
+		
+		/* Add delete onClick */
+		DeleteDialogModel delete_dialog = this.getWidget("delete_dialog");
+		delete_button.events.add("onClick", new Callback(delete_dialog, "onClick"));
+	}
 }
