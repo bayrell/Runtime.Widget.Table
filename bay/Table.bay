@@ -19,6 +19,7 @@
 <class name="Runtime.Widget.Table.Table">
 
 <use name="Runtime.Web.BaseWidget" />
+<use name="Runtime.Widget.RenderListModel" />
 <use name="Runtime.Widget.RowButtons" />
 <use name="Runtime.Widget.Table.TableModel" />
 
@@ -38,7 +39,7 @@
 	background-color: var(--widget-color-table-background);
 }
 .widget_table %(RowButtons)widget_table__top_buttons{
-	margin-bottom: var(--widget-space);
+	margin-bottom: calc(var(--widget-space) * 3);
 }
 .widget_table--border{
     border-color: var(--widget-color-border);
@@ -151,13 +152,9 @@
 
 
 <template name="renderWidgets">
-	%for (int i=0; i<this.model.render_list.count(); i++)
-	{
-		%set string widget_name = this.model.render_list.get(i);
-		%set BaseWidget widget = this.model.getWidget(widget_name);
-		%set string component = widget.component;
-		<{component} @model={{ widget }} />
-	}
+	%set RenderListModel render_list = this.model.getWidget("render_list");
+	%set string component = render_list.component;
+	<{component} @model={{ render_list }} />
 </template>
 
 

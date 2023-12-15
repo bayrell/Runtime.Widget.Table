@@ -21,6 +21,7 @@ namespace Runtime.Widget.Table;
 use Runtime.Callback;
 use Runtime.Exceptions.RuntimeException;
 use Runtime.Widget.ButtonModel;
+use Runtime.Widget.RenderListModel;
 use Runtime.Widget.RowButtons;
 use Runtime.Widget.RowButtonsModel;
 use Runtime.Widget.Crud.CrudApiStorage;
@@ -46,19 +47,22 @@ class TableDialogModel extends TableModel
 			throw new RuntimeException("FormModel is not defined");
 		}
 		
+		/* Get render list widget */
+		RenderListModel render_list = this.getWidget("render_list");
+		
 		/* Create save wiget */
 		SaveDialogModel save_dialog = new SaveDialogModel{
 			"form": form_model,
 			"parent_widget": this,
 		};
-		this.addRender(save_dialog.getWidgetName());
+		render_list.addRender(save_dialog.getWidgetName());
 		
 		/* Create delete widget */
 		DeleteDialogModel delete_dialog = new DeleteDialogModel{
 			"form": form_model,
 			"parent_widget": this,
 		};
-		this.addRender(delete_dialog.getWidgetName());
+		render_list.addRender(delete_dialog.getWidgetName());
 	}
 	
 	

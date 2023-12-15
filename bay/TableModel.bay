@@ -22,6 +22,7 @@ use Runtime.BaseObject;
 use Runtime.Callback;
 use Runtime.Web.BaseWidget;
 use Runtime.Widget.ButtonModel;
+use Runtime.Widget.RenderListModel;
 use Runtime.Widget.RowButtons;
 use Runtime.Widget.RowButtonsModel;
 use Runtime.Widget.Styles;
@@ -71,6 +72,9 @@ class TableModel extends BaseWidget
 	 */
 	void initWidgets()
 	{
+		RenderListModel render_list = new RenderListModel{
+			"parent_widget": this,
+		};
 	}
 	
 	
@@ -114,6 +118,17 @@ class TableModel extends BaseWidget
 	{
 		this.fields.append(field);
 		return field;
+	}
+	
+	
+	/**
+	 * Remove field
+	 */
+	void removeField(string field_name)
+	{
+		this.fields = this.fields.filter(
+			bool (Map field) use (field_name) => field.get("name") != field_name
+		);
 	}
 	
 	
