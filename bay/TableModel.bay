@@ -21,7 +21,8 @@ namespace Runtime.Widget.Table;
 use Runtime.BaseObject;
 use Runtime.Callback;
 use Runtime.Serializer;
-use Runtime.Web.BaseWidget;
+use Runtime.Web.ApiResult;
+use Runtime.Web.BaseModel;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.RenderListModel;
 use Runtime.Widget.RowButtons;
@@ -31,7 +32,7 @@ use Runtime.Widget.Crud.CrudApiStorage;
 use Runtime.Widget.Table.Table;
 
 
-class TableModel extends BaseWidget
+class TableModel extends BaseModel
 {
 	CrudApiStorage storage = null;
 	string component = classof Table;
@@ -222,8 +223,8 @@ class TableModel extends BaseWidget
 	/**
 	 * Refresh table
 	 */
-	async void refresh()
+	async ApiResult refresh()
 	{
-		await this.storage.doSearch();
+		return await this.storage.doSearch();
 	}
 }

@@ -18,33 +18,48 @@
 
 namespace Runtime.Widget.Table;
 
-use Runtime.Web.Hooks.AppHook as BaseAppHook;
-use Runtime.Widget.Table.DeleteDialog;
+use Runtime.Web.ApiResult;
+use Runtime.Widget.Button;
+use Runtime.Widget.ButtonModel;
+use Runtime.Widget.WidgetResultModel;
 use Runtime.Widget.Table.RefreshButton;
-use Runtime.Widget.Table.SaveDialog;
-use Runtime.Widget.Table.Table;
+use Runtime.Widget.Table.TableModel;
 
 
-class AppHook extends BaseAppHook
+class RefreshButtonModel extends ButtonModel
 {
+	WidgetResultModel result = new WidgetResultModel;
+	string component = classof RefreshButton;
+	TableModel table = null;
+	
+	
 	/**
-	 * Register hooks
+	 * Constructor
 	 */
-	void register_hooks()
+	void constructor(Map params = null)
 	{
-		this.register(static::COMPONENTS);
+		parent(params);
+		
+		if (params)
+		{
+			if (params.has("parent_widget")) this.table = params.get("parent_widget");
+			if (params.has("table")) this.table = params.get("table");
+		}
+		
+		this.styles.add("primary");
 	}
 	
 	
 	/**
-	 * Components
+	 * Refresh
 	 */
-	void components(Map params)
+	async void refresh()
 	{
-		Vector components = params.get("components");
-		components.append(classof DeleteDialog);
-		components.append(classof RefreshButton);
-		components.append(classof SaveDialog);
-		components.append(classof Table);
+		this.result.message = "Refresh";
+		this.result.code = 0;
+		
+		ApiResult res = await this.table.refresh();
+		this.result.setApiResult(res);
 	}
+	
 }

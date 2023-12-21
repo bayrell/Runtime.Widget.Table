@@ -18,7 +18,6 @@
 
 <class name="Runtime.Widget.Table.Table">
 
-<use name="Runtime.Web.BaseWidget" />
 <use name="Runtime.Widget.RenderListModel" />
 <use name="Runtime.Widget.RowButtons" />
 <use name="Runtime.Widget.Table.TableModel" />
@@ -27,8 +26,9 @@
 <style>
 .widget_table{
 	width: auto;
+	border-collapse: collapse;
 	margin-bottom: 1rem;
-    vertical-align: top;
+	vertical-align: top;
 }
 .widget_table__th{
 	text-align: center;
@@ -42,12 +42,14 @@
 	margin-bottom: calc(var(--widget-space) * 3);
 }
 .widget_table--border{
-    border-color: var(--widget-color-border);
+	border-color: var(--widget-color-border);
 	border-width: var(--widget-border-width);
+	border-style: solid;
 }
 .widget_table--border .widget_table__th, .widget_table--border .widget_table__td{
 	border-color: var(--widget-color-border);
 	border-width: var(--widget-border-width);
+	border-style: solid;
 }
 </style>
 

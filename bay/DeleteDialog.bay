@@ -18,60 +18,23 @@
 
 <class name="Runtime.Widget.Table.DeleteDialog">
 
-<use name="Runtime.Widget.WidgetError" />
-<use name="Runtime.Widget.Dialog.Dialog" component="true" />
+<use name="Runtime.Widget.WidgetResult" component="true" />
 
 
 <style>
 .widget_delete__content{
 	margin-bottom: calc(var(--widget-space) * 3);
 }
-.widget_delete__result{
-	text-align: center;
-}
-.widget_delete__result--success{
-	color: var(--widget-color-success);
-}
-.widget_delete__result--error{
-	color: var(--widget-color-danger);
-}
-.widget_delete__result--hide{
-	display: none;
-}
 </style>
 
 
 <template name="render">
-	<Dialog @model={{ this.model.dialog }} @ref="dialog">
+	%set string dialog_component = this.model.dialog.component;
+	<{dialog_component} @model={{ this.model.dialog }} @ref="dialog">
 		<div class="widget_delete__content">{{ this.model.dialog.content }}</div>
-		<div class="widget_delete__result" class={{ this.getErrorClass() }} >
-			{{ this.getErrorMessage() }}
-		</div>
-	</Dialog>
+		<WidgetResult @model={{ this.model.form.storage.result }} />
+	</{dialog_component}>
 </template>
-
-
-<script>
-
-/**
- * Returns error class
- */
-string getErrorClass()
-{
-	WidgetError error = this.model.form.storage.error;
-	if (error.message == "") return "widget_delete__result--hide";
-	if (error.isSuccess()) return "widget_delete__result--success";
-	if (error.isError()) return "widget_delete__result--error";
-	return "";
-}
-
-
-/**
- * Returns error message
- */
-string getErrorMessage() => this.model.form.storage.error.message;
-
-</script>
 
 
 </class>

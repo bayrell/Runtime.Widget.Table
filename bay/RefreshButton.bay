@@ -16,18 +16,43 @@
  *  limitations under the License.
 -->
 
-<class name="Runtime.Widget.Table.SaveDialog">
+<class name="Runtime.Widget.Table.RefreshButton">
 
-<use name="Runtime.Widget.Dialog.Dialog" component="true" />
-<use name="Runtime.Widget.Form.Form" component="true" />
+<use name="Runtime.Widget.Button" component="true" />
+<use name="Runtime.Widget.WidgetResult" component="true" />
+
+
+<style>
+.refresh_button{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.refresh_button %(WidgetResult)widget_result{
+    margin-top: 0;
+}
+</style>
 
 
 <template name="render">
-	%set string dialog_component = this.model.dialog.component;
-	<{dialog_component} @model={{ this.model.dialog }}>
-		<Form @model={{ this.model.form }} />
-	</{dialog_component}>
+    <div class="refresh_button">
+        <Button @model={{ this.model }} @event:onClick={{ this.onRefresh }}>Refresh</Button>
+        <WidgetResult @model={{ this.model.result }} />
+    </div>
 </template>
+
+
+<script>
+
+/**
+ * Refresh item
+ */
+async void onRefresh()
+{
+    await this.model.refresh();
+}
+
+</script>
 
 
 </class>

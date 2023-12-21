@@ -5,6 +5,8 @@
 		"AppHook.bay",
 		"DeleteDialog.bay",
 		"DeleteDialogModel.bay",
+		"RefreshButton.bay",
+		"RefreshButtonModel.bay",
 		"SaveDialog.bay",
 		"SaveDialogModel.bay",
 		"Table.bay",

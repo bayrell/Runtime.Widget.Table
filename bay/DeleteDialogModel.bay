@@ -21,7 +21,7 @@ namespace Runtime.Widget.Table;
 use Runtime.BaseObject;
 use Runtime.Callback;
 use Runtime.Serializer;
-use Runtime.Web.BaseWidget;
+use Runtime.Web.BaseModel;
 use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
@@ -30,7 +30,7 @@ use Runtime.Widget.Table.DeleteDialog;
 use Runtime.Widget.Table.TableModel;
 
 
-class DeleteDialogModel extends BaseWidget
+class DeleteDialogModel extends BaseModel
 {
 	string widget_name = "delete_dialog";
 	string component = classof DeleteDialog;
@@ -49,8 +49,8 @@ class DeleteDialogModel extends BaseWidget
 		if (params)
 		{
 			if (params.has("parent_widget")) this.table = params.get("parent_widget");
-			if (params.has("form")) this.form = params.get("form");
 			if (params.has("table")) this.table = params.get("table");
+			if (params.has("form")) this.form = params.get("form");
 		}
 		
 		/* Setup dialog */
@@ -121,7 +121,7 @@ class DeleteDialogModel extends BaseWidget
 	async void onConfirmButtonClick()
 	{
 		await this.form.delete();
-		if (this.form.storage.error.isSuccess())
+		if (this.form.storage.result.isSuccess())
 		{
 			this.dialog.hide();
 			await this.table.refresh();

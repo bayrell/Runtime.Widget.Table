@@ -21,7 +21,7 @@ namespace Runtime.Widget.Table;
 use Runtime.BaseObject;
 use Runtime.Callback;
 use Runtime.Serializer;
-use Runtime.Web.BaseWidget;
+use Runtime.Web.BaseModel;
 use Runtime.Widget.Button;
 use Runtime.Widget.ButtonModel;
 use Runtime.Widget.Dialog.DialogModel;
@@ -30,11 +30,10 @@ use Runtime.Widget.Table.SaveDialog;
 use Runtime.Widget.Table.TableModel;
 
 
-class SaveDialogModel extends BaseWidget
+class SaveDialogModel extends BaseModel
 {
 	string widget_name = "save_dialog";
 	string component = classof SaveDialog;
-	FormModel form = null;
 	TableModel table = null;
 	DialogModel dialog = new DialogModel;
 	
@@ -49,8 +48,8 @@ class SaveDialogModel extends BaseWidget
 		if (params)
 		{
 			if (params.has("parent_widget")) this.table = params.get("parent_widget");
-			if (params.has("form")) this.form = params.get("form");
 			if (params.has("table")) this.table = params.get("table");
+			if (params.has("form")) this.form = params.get("form");
 		}
 		
 		/* Setup dialog */
@@ -135,7 +134,7 @@ class SaveDialogModel extends BaseWidget
 	async void onConfirmButtonClick()
 	{
 		await this.form.save();
-		if (this.form.storage.error.isSuccess())
+		if (this.form.storage.result.isSuccess())
 		{
 			this.dialog.hide();
 			await this.table.refresh();
