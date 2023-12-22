@@ -215,8 +215,8 @@ class TableModel extends BaseModel
 	 */
 	async void loadData()
 	{
-		await parent();
 		await this.storage.doSearch();
+		await parent();
 	}
 	
 	
