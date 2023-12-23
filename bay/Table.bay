@@ -75,7 +75,7 @@
 </template>
 
 
-<template name="renderField" args="int row_number, FieldInfo field, Dict item">
+<template name="renderField" args="Dict item, int row_number, FieldInfo field">
 	%set TableModel model = this.model;
 	%set var storage = model.storage;
 	%set string field_name = field.get("name");
@@ -104,18 +104,16 @@
 </template>
 
 
-<template name="renderRow" args="int row_number">
+<template name="renderRow" args="Dict item, int row_number">
 	%set TableModel model = this.model;
 	%set Collection fields = model.fields;
-	%set Collection items = model.storage.items;
 	<tr @key={{ row_number }}>
 		%if (fields)
 		{
 			%for (int i=0; i<fields.count(); i++)
 			{
 				%set Dict field = fields[i];
-				%set Dict item = items.get(row_number);
-				%render this.renderField(row_number, field, item);
+				%render this.renderField(item, row_number, field);
 			}
 		}
 	</tr>
@@ -123,13 +121,16 @@
 
 
 <template name="renderBody">
-	%set TableModel model = this.model;
-	%set Collection items = model.storage.items;
-	%if (items)
+	%if (this.model.storage)
 	{
-		%for (int i=0; i<items.count(); i++)
+		%set Collection items = this.model.storage.getItems();
+		%if (items)
 		{
-			%render this.renderRow(i);
+			%for (int i=0; i<items.count(); i++)
+			{
+				%set Dict item = items.get(i);
+				%render this.renderRow(item, i);
+			}
 		}
 	}
 </template>

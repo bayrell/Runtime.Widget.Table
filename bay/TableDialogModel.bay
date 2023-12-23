@@ -44,7 +44,10 @@ class TableDialogModel extends TableModel
 		FormModel form_model = this.getWidget("form");
 		if (form_model == null)
 		{
-			throw new RuntimeException("FormModel is not defined");
+			form_model = new FormModel{
+				"parent_widget": this,
+				"widget_name": "form",
+			};
 		}
 		
 		/* Get render list widget */

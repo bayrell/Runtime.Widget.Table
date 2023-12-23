@@ -32,7 +32,10 @@
 	%set string dialog_component = this.model.dialog.component;
 	<{dialog_component} @model={{ this.model.dialog }} @ref="dialog">
 		<div class="widget_delete__content">{{ this.model.dialog.content }}</div>
-		<WidgetResult @model={{ this.model.form.storage.result }} />
+		%if (this.model.form.storage)
+		{
+			<WidgetResult @model={{ this.model.form.storage.result }} />
+		}
 	</{dialog_component}>
 </template>
 

@@ -52,6 +52,7 @@ class TableModel extends BaseModel
 		parent(params);
 		if (params)
 		{
+			if (params.has("storage")) this.storage = params.get("storage");
 			if (params.has("styles")) this.styles.addStyles(params.get("styles"));
 		}
 		
@@ -109,7 +110,10 @@ class TableModel extends BaseModel
 	 */
 	void setDataStorage(CrudApiStorage storage)
 	{
-		this.storage = storage;
+		if (storage != null)
+		{
+			this.storage = storage;
+		}
 	}
 	
 	
@@ -191,7 +195,7 @@ class TableModel extends BaseModel
 	/**
 	 * Returns item by row number
 	 */
-	Dict getItemByRowNumber(int row_number) => this.storage.items.get(row_number);
+	Dict getItemByRowNumber(int row_number) => this.storage.getItemByRowNumber(row_number);
 	
 	
 	/**
@@ -215,7 +219,10 @@ class TableModel extends BaseModel
 	 */
 	async void loadData()
 	{
-		await this.storage.doSearch();
+		if (this.storage)
+		{
+			await this.storage.doSearch();
+		}
 		await parent();
 	}
 	
@@ -225,6 +232,10 @@ class TableModel extends BaseModel
 	 */
 	async ApiResult refresh()
 	{
-		return await this.storage.doSearch();
+		if (this.storage)
+		{
+			return await this.storage.doSearch();
+		}
+		return null;
 	}
 }
