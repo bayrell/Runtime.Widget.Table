@@ -155,8 +155,11 @@
 
 <template name="renderWidgets">
 	%set RenderListModel render_list = this.model.getWidget("render_list");
-	%set string component = render_list.component;
-	<{component} @model={{ render_list }} />
+	%if (render_list)
+	{
+		%set string component = render_list.component;
+		<{component} @model={{ render_list }} />
+	}
 </template>
 
 
