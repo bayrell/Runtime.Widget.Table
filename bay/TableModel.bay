@@ -55,8 +55,10 @@ class TableModel extends BaseModel
 			if (params.has("storage")) this.storage = params.get("storage");
 			if (params.has("styles")) this.styles.addStyles(params.get("styles"));
 		}
-		
-		this.setDataStorage( this.createDataStorage() );
+		if (this.storage == null)
+		{
+			this.setDataStorage( this.createDataStorage() );
+		}
 		this.initWidgets();
 		this.initFields();
 		this.initTopButtons();
@@ -110,10 +112,7 @@ class TableModel extends BaseModel
 	 */
 	void setDataStorage(CrudApiStorage storage)
 	{
-		if (storage != null)
-		{
-			this.storage = storage;
-		}
+		this.storage = storage;
 	}
 	
 	

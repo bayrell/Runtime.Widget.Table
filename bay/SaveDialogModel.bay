@@ -105,10 +105,6 @@ class SaveDialogModel extends BaseModel
 			item = Serializer::copy(item);
 			this.form.storage.setItem(item);
 			
-			/* Set primary key */
-			Map pk = this.form.getPrimaryKey();
-			this.form.storage.setPrimaryKey(pk);
-			
 			/* Set title */
 			this.dialog.title = this.form.getPageTitle("edit");
 			this.form.setAction("edit");
