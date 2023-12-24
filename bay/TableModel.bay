@@ -61,7 +61,7 @@ class TableModel extends BaseModel
 		}
 		this.initWidgets();
 		this.initFields();
-		this.initTopButtons();
+		this.initButtons();
 		this.initStyles();
 	}
 	
@@ -92,9 +92,9 @@ class TableModel extends BaseModel
 	
 	
 	/**
-	 * Init top buttons
+	 * Init buttons
 	 */
-	void initTopButtons()
+	void initButtons()
 	{
 	}
 	

@@ -70,9 +70,9 @@ class TableDialogModel extends TableModel
 	
 	
 	/**
-	 * Init top buttons
+	 * Init buttons
 	 */
-	void initTopButtons()
+	void initButtons()
 	{
 		/* Add button */
 		ButtonModel add_button = this.top_buttons.add(new ButtonModel{
