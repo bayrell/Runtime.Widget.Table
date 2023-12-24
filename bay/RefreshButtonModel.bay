@@ -28,8 +28,9 @@ use Runtime.Widget.Table.TableModel;
 
 class RefreshButtonModel extends ButtonModel
 {
-	WidgetResultModel result = new WidgetResultModel;
+	string widget_name = "refresh_button";
 	string component = classof RefreshButton;
+	WidgetResultModel result = new WidgetResultModel;
 	TableModel table = null;
 	
 	
