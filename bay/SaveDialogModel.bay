@@ -55,6 +55,7 @@ class SaveDialogModel extends BaseModel
 		/* Setup dialog */
 		this.dialog.title = "Add item";
 		this.dialog.buttons.styles.add("align-end");
+		this.layout.addComponent(this.dialog.component);
 		
 		/* Setup close buttons */
 		ButtonModel close_button = this.dialog.buttons.add(new ButtonModel{

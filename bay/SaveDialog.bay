@@ -18,14 +18,12 @@
 
 <class name="Runtime.Widget.Table.SaveDialog">
 
-<use name="Runtime.Widget.Dialog.Dialog" component="true" />
-<use name="Runtime.Widget.Form.Form" component="true" />
-
 
 <template name="render">
 	%set string dialog_component = this.model.dialog.component;
 	<{dialog_component} @model={{ this.model.dialog }}>
-		<Form @model={{ this.model.form }} />
+		%set string form_component = this.model.form.component;
+		<{form_component} @model={{ this.model.form }} />
 	</{dialog_component}>
 </template>
 
