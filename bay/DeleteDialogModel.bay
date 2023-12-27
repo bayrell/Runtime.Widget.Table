@@ -60,6 +60,7 @@ class DeleteDialogModel extends BaseModel
 		/* Setup close buttons */
 		ButtonModel close_button = this.dialog.buttons.add(new ButtonModel{
 			"content": "Cancel",
+			"widget_name": "cancel_button",
 			"styles": [
 				"gray"
 			],
@@ -69,6 +70,7 @@ class DeleteDialogModel extends BaseModel
 		/* Setup confirm button */
 		ButtonModel confirm_button = this.dialog.buttons.add(new ButtonModel{
 			"content": "Save",
+			"widget_name": "confirm_button",
 			"styles": [
 				"danger"
 			],

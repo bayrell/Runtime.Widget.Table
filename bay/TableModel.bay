@@ -144,6 +144,7 @@ class TableModel extends BaseModel
 	{
 		ButtonModel edit_button = row_buttons.add(new ButtonModel{
 			"content": "Edit",
+			"widget_name": "edit_button",
 			"styles": [
 				"default",
 				"small",
@@ -160,6 +161,7 @@ class TableModel extends BaseModel
 	{
 		ButtonModel delete_button = row_buttons.add(new ButtonModel{
 			"content": "Delete",
+			"widget_name": "delete_button",
 			"styles": [
 				"danger",
 				"small",

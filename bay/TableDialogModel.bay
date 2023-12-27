@@ -77,6 +77,7 @@ class TableDialogModel extends TableModel
 		/* Add button */
 		ButtonModel add_button = this.top_buttons.add(new ButtonModel{
 			"content": "Add",
+			"widget_name": "add_button",
 			"styles": [
 				"success",
 			],
@@ -93,6 +94,7 @@ class TableDialogModel extends TableModel
 		/* Edit button */
 		ButtonModel edit_button = row_buttons.add(new ButtonModel{
 			"content": "Edit",
+			"widget_name": "edit_button",
 			"styles": [
 				"default",
 				"small",
@@ -113,6 +115,7 @@ class TableDialogModel extends TableModel
 		/* Delete button */
 		ButtonModel delete_button = row_buttons.add(new ButtonModel{
 			"content": "Delete",
+			"widget_name": "delete_button",
 			"styles": [
 				"danger",
 				"small",
