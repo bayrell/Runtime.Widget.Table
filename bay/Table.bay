@@ -24,7 +24,7 @@
 
 
 <style>
-.widget_table{
+.widget_table .widget_table_wrap > table{
 	width: auto;
 	border-collapse: collapse;
 	margin-bottom: 1rem;
@@ -37,6 +37,10 @@
 	vertical-align: middle;
 	padding: var(--widget-space);
 	background-color: var(--widget-color-table-background);
+}
+.widget_table__tr.selected td{
+	background-color: var(--widget-color-selected);
+	color: var(--widget-color-selected-text);
 }
 .widget_table %(RowButtons)widget_table__top_buttons{
 	margin-bottom: calc(var(--widget-space) * 3);
@@ -107,7 +111,10 @@
 <template name="renderRow" args="Dict item, int row_number">
 	%set TableModel model = this.model;
 	%set Collection fields = model.fields;
-	<tr @key={{ row_number }}>
+	<tr class="widget_table__tr" class={{ this.isRowSelected(row_number) ? "selected" : "" }}
+		data-row={{ row_number }} @key={{ row_number }}
+		@event:onClick={{ this.onRowClick(row_number) }}
+	>
 		%if (fields)
 		{
 			%for (int i=0; i<fields.count(); i++)
@@ -145,12 +152,14 @@
 
 
 <template name="renderTable">
-	<table class="widget_table table" class={{ this.getStyles() }}>
-		<tbody>
-			%render this.renderHeader();
-			%render this.renderBody();
-		</tbody>
-	</table>
+	<div class="widget_table_wrap">
+		<table class={{ this.getStyles() }}>
+			<tbody>
+				%render this.renderHeader();
+				%render this.renderBody();
+			</tbody>
+		</table>
+	</div>
 </template>
 
 
@@ -175,10 +184,35 @@
 
 <script>
 
+int row_selected = -1;
+
+
+/**
+ * Returns true if row selected
+ */
+bool isRowSelected(int row_number) => this.row_selected == row_number;
+
+
+/**
+ * Returns selected item
+ */
+Dict getSelectedItem() => this.model.storage.getItemByRowNumber(this.row_selected);
+
+
 /**
  * Returns styles
  */
 string getStyles() => this.model.styles.join(" ");
+
+
+/**
+ * OnRowClick
+ */
+void onRowClick(int row_number)
+{
+	return void (){
+	};
+}
 
 </script>
 
