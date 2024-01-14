@@ -38,6 +38,7 @@ class TableModel extends BaseModel
 	string component = classof Table;
 	string widget_name = "table";
 	Vector<Map> fields = [];
+	Map pagination = {};
 	RowButtonsModel top_buttons = new RowButtonsModel{
 		"styles": ["@widget_table__top_buttons"]
 	};
@@ -238,5 +239,23 @@ class TableModel extends BaseModel
 			return await this.storage.doSearch();
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * Row click
+	 */
+	async void onRowClick(int row_number)
+	{
+	}
+	
+	
+	/**
+	 * Change page
+	 */
+	async void onChangePage(string page)
+	{
+		this.storage.page = page;
+		await this.storage.doSearch();
 	}
 }

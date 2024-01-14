@@ -18,6 +18,7 @@
 
 <class name="Runtime.Widget.Table.Table">
 
+<use name="Runtime.Widget.Pagination" component="true" />
 <use name="Runtime.Widget.RenderListModel" />
 <use name="Runtime.Widget.RowButtons" />
 <use name="Runtime.Widget.Table.TableModel" />
@@ -113,7 +114,7 @@
 	%set Collection fields = model.fields;
 	<tr class="widget_table__tr" class={{ this.isRowSelected(row_number) ? "selected" : "" }}
 		data-row={{ row_number }} @key={{ row_number }}
-		@event:onClick={{ this.onRowClick(row_number) }}
+		@event:onClick={{ void () use (row_number) => this.onRowClick(row_number) }}
 	>
 		%if (fields)
 		{
@@ -124,6 +125,25 @@
 			}
 		}
 	</tr>
+</template>
+
+
+<template name="renderPagination">
+	%set Collection fields = this.model.fields;
+	%if (fields and this.model.storage.pages > 1)
+	{
+		%set Map props = this.model.pagination;
+		<tr>
+			<td colspan={{ fields.count() }}>
+				<Pagination
+					page={{ this.model.storage.page }}
+					pages={{ this.model.storage.pages }}
+					@event:onPage={{ this.onChangePage }}
+					...props
+				/>
+			</td>
+		</tr>
+	}
 </template>
 
 
@@ -139,6 +159,7 @@
 				%render this.renderRow(item, i);
 			}
 		}
+		%render this.renderPagination();
 	}
 </template>
 
@@ -210,8 +231,16 @@ string getStyles() => this.model.styles.join(" ");
  */
 void onRowClick(int row_number)
 {
-	return void (){
-	};
+	this.model.onRowClick(row_number);
+}
+
+
+/**
+ * On change page
+ */
+void onChangePage(string page)
+{
+	this.model.onChangePage(page);
 }
 
 </script>
