@@ -25,7 +25,7 @@
 
 
 <style>
-.widget_table .widget_table_wrap > table{
+.wiget_table__table{
 	width: auto;
 	border-collapse: collapse;
 	margin-bottom: 1rem;
@@ -173,14 +173,12 @@
 
 
 <template name="renderTable">
-	<div class="widget_table_wrap">
-		<table class={{ this.getStyles() }}>
-			<tbody>
-				%render this.renderHeader();
-				%render this.renderBody();
-			</tbody>
-		</table>
-	</div>
+	<table class="wiget_table__table" class={{ this.getStyles() }}>
+		<tbody>
+			%render this.renderHeader();
+			%render this.renderBody();
+		</tbody>
+	</table>
 </template>
 
 
